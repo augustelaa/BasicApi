@@ -1,6 +1,7 @@
 ﻿using BasicApi.Application.RequestModels;
 using BasicApi.DataBase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace BasicApi.Controllers
 {
@@ -36,12 +37,9 @@ namespace BasicApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public ActionResult<EmployeeRequestModel> Get(long id)
+        public ActionResult<EmployeeRequestModel> Get([Range(1, long.MaxValue)] long id)
         {
-            if (id <= 0)
-            {
-                return BadRequest("Your request is invalid.");
-            }
+            
             try
             {
                 var employee = _employeesRepository.Select(id);
@@ -95,7 +93,7 @@ namespace BasicApi.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpPut("{id}")]
-        public void Put(long id, [FromBody] EmployeeRequestModel employee)
+        public void Put([Range(1, long.MaxValue)] long id, [FromBody] EmployeeRequestModel employee)
         {
             employee.Id = id;
             _employeesRepository.Update(employee.ToSchema());
@@ -115,7 +113,7 @@ namespace BasicApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public void Delete(long id)
+        public void Delete([Range(1, long.MaxValue)] long id)
         {
             _employeesRepository.Delete(id);
         }

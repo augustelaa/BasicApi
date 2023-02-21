@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BasicApi.Application.RequestModels
 {
+    // For preventing over-posting and to ommit some propperties, we are going to use a request model instead of the real model itself.
     public class EmployeeRequestModel : IValidatableObject
     {
         public long Id { get; set; }
@@ -19,7 +20,7 @@ namespace BasicApi.Application.RequestModels
                 Age = Age
             };
         }
-
+        // We can use the Required anottation either... but i've made this as a ValidatableObject just to make an example.
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (string.IsNullOrEmpty(Name))
