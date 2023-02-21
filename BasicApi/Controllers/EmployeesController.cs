@@ -36,9 +36,9 @@ namespace BasicApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult Get(long id)
+        public ActionResult<EmployeeRequestModel> Get(long id)
         {
-            if (id < 0)
+            if (id <= 0)
             {
                 return BadRequest("Your request is invalid.");
             }
@@ -47,10 +47,9 @@ namespace BasicApi.Controllers
                 var employee = _employeesRepository.Select(id);
                 if (employee == null)
                 {
-                    return NotFound("Employee not found.");
+                    return NotFound();
                 }
-                return CreatedAtAction(nameof(EmployeeRequestModel),
-                new
+                return Ok(new
                 {
                     Id = employee.Id,
                     Age = employee.Age,
