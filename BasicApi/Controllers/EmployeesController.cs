@@ -56,7 +56,7 @@ namespace BasicApi.Controllers
             }
             catch(Exception)
             {
-                return Problem("Internal error, please contact us.");
+                return Problem("Internal error, please contact us.", statusCode: 500);
             }
         }
 

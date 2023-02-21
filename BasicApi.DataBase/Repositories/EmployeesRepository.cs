@@ -28,7 +28,7 @@ namespace BasicApi.DataBase.Repositories
         public EmployeeSchema Select(long id)
         {
             var sql = @"
-                    SELECT * FROM employees
+                    SELECT Id, Name, Age, Passcode FROM employees
                     WHERE id = @Id";
             return Select<EmployeeSchema>(sql, new { Id = id });
         }
