@@ -65,16 +65,17 @@ namespace BasicApi.Controllers
         /// Creates one empployee.
         /// </summary>
         /// <param name="employee"></param>
-        /// <response code="201">Accepted</response>
+        /// <response code="201">Created</response>
         /// <response code="400">Bad Request</response>
         /// <response code="500">Internal Server Error</response>
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public void Post([FromBody] EmployeeRequestModel employee)
+        public IActionResult Post([FromBody] EmployeeRequestModel employee)
         {
-            _employeesRepository.Insert(employee.ToSchema());
+            var result = _employeesRepository.Insert(employee.ToSchema());
+            return Created($"https://localhost:7224/api/Employees/{result}", result);
         }
 
         // PUT api/employees/{id}
@@ -83,20 +84,25 @@ namespace BasicApi.Controllers
         /// </summary>
         /// <param name="id">Eployee's id</param>
         /// <param name="employee"></param>
-        /// <response code="201">Accepted</response>
+        /// <response code="200">Success</response>
         /// <response code="400">Bad Request</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
         [HttpPut]
-        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpPut("{id}")]
-        public void Put([Range(1, long.MaxValue)] long id, [FromBody] EmployeeRequestModel employee)
+        public IActionResult Put(long id, [FromBody] EmployeeRequestModel employee)
         {
+            if (id <= 0)
+            {
+                return BadRequest("Field id is not valid.");
+            }
             employee.Id = id;
             _employeesRepository.Update(employee.ToSchema());
+            return Ok();
         }
 
         // DELETE api/employees/{id}
@@ -104,18 +110,19 @@ namespace BasicApi.Controllers
         /// Deletes one empployee.
         /// </summary>
         /// <param name="id">Eployee's id</param>
-        /// <response code="201">Accepted</response>
+        /// <response code="202">Accepted</response>
         /// <response code="400">Bad Request</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(201)]
+        [ProducesResponseType(202)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public void Delete([Range(1, long.MaxValue)] long id)
+        public IActionResult Delete([Range(1, long.MaxValue)] long id)
         {
             _employeesRepository.Delete(id);
+            return Accepted();
         }
     }
 }

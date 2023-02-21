@@ -9,22 +9,20 @@ namespace BasicApi.DataBase.Repositories
         public void Delete(long id)
         {
             var sql = @"
-                    DELETE employees
+                    DELETE FROM employees
                     WHERE id = @Id";
-            Delete(sql);
+            Delete(sql, new {Id = id});
         }
 
-        public bool Insert(EmployeeSchema employee)
+        public long Insert(EmployeeSchema employee)
         {
             var sql = @"
                     INSERT INTO employees
-                    (name),
-                    (age)
+                    (name, age)
                     VALUES
-                    (@Name),
-                    (@Age);
+                    (@Name, @Age);
                     SELECT last_insert_rowid();";
-            return Insert<EmployeeSchema>(sql, employee) > 0;
+            return Insert<EmployeeSchema>(sql, employee);
         }
 
         public EmployeeSchema Select(long id)
@@ -32,7 +30,7 @@ namespace BasicApi.DataBase.Repositories
             var sql = @"
                     SELECT * FROM employees
                     WHERE id = @Id";
-            return Select<EmployeeSchema>(sql);
+            return Select<EmployeeSchema>(sql, new { Id = id });
         }
 
         public void Update(EmployeeSchema employee)

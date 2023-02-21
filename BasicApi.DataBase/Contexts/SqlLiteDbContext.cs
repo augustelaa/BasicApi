@@ -11,8 +11,8 @@ namespace BasicApi.DataBase.Contexts
 
         public SQLiteDbContext()
         {
-            _connectionString = "Data Source=BasicApi";
-            _dbConn = new SQLiteConnection(_connectionString);
+            _connectionString = "Data Source=C:\\Users\\PremierSoft\\AppData\\Roaming\\database.db;Version=3;";
+            _dbConn = new SQLiteConnection(_connectionString, true);
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
@@ -40,11 +40,7 @@ namespace BasicApi.DataBase.Contexts
             using (_dbConn)
             {
                 Open();
-                var o = _dbConn.Query<T>(sql, parameters).FirstOrDefault();
-                if (o != null)
-                    return o;
-
-                return new T();
+                return _dbConn.Query<T>(sql, parameters).FirstOrDefault();
             }
         }
 
