@@ -88,7 +88,6 @@ namespace BasicApi.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -99,6 +98,11 @@ namespace BasicApi.Controllers
             if (id <= 0)
             {
                 return BadRequest("Field id is not valid.");
+            }
+            var oldEmployee = _employeesRepository.Select(id);
+            if (oldEmployee == null)
+            {
+                return NotFound();
             }
             employee.Id = id;
             _employeesRepository.Update(employee.ToSchema());
@@ -121,6 +125,11 @@ namespace BasicApi.Controllers
         [ProducesResponseType(500)]
         public IActionResult Delete([Range(1, long.MaxValue)] long id)
         {
+            var employee = _employeesRepository.Select(id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
             _employeesRepository.Delete(id);
             return Accepted();
         }

@@ -11,7 +11,7 @@ namespace BasicApi.DataBase.Contexts
 
         public SQLiteDbContext()
         {
-            _connectionString = "Data Source=C:\\Users\\PremierSoft\\AppData\\Roaming\\database.db;Version=3;";
+            _connectionString = "Data Source=C:\\Users\\Augusto\\AppData\\Roaming\\database.db;Version=3;";
             _dbConn = new SQLiteConnection(_connectionString, true);
 
             DefaultTypeMap.MatchNamesWithUnderscores = true;
@@ -56,8 +56,8 @@ namespace BasicApi.DataBase.Contexts
         #region helpers
         public void Dispose()
         {
-            //_dbConn.Close();
-            //_dbConn.Dispose();
+            _dbConn.Close();
+            _dbConn.Dispose();
         }
         public void Open()
         {
